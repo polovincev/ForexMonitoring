@@ -1,0 +1,37 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "build:gradle": "cross-env CI=true npm run test && npm run build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "postbuild": "rimraf ../server/src/main/resources/static && copyup -E \"build/**/*\" ../server/src/main/resources/static"
+  },
+  "dependencies": {
+    "antd": "^4.3.4",
+    "axios": "^0.19.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.1.0",
+    "cross-env": "^7.0.2",
+    "rimraf": "^3.0.2"
+  },
+  "proxy": "http://localhost:8080"
+}
