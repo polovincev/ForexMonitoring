@@ -1,32 +1,81 @@
 import React, { Component } from 'react'
+import s from '../styles/Login.module.scss';
 import { connect } from 'react-redux'
+import { Redirect } from "react-router-dom";
 import { bindActionCreators } from 'redux';
 import { authUser } from '../redux/actions/userAction';
+import { Layout, Form, Input, Button } from 'antd';
+
+
+const { Content } = Layout
+
 
 class Login extends Component {
 
-    componentDidMount() {
+    onFinish = ({ username, password }) => {
         const { authUser } = this.props
-        authUser('roman', '12')
 
-
+        authUser(username, password)
     }
 
     render() {
-        const { user } = this.props
+        const layout = {
+            labelCol: { span: 6 },
+            wrapperCol: { span: 18 },
+        };
+
+        const tailLayout = {
+            wrapperCol: { offset: 6, span: 18 },
+        };
+
+        const { user } = this.props;
+
+        if (user.token) {
+            return <Redirect to="/" />;
+        }
+
         return (
-            <div>
-                <h1>123456</h1>
-                <div>{user.username}</div>
-            </div>
+            <Layout>
+                <Content>
+                    <div className={s.root}>
+                        <div className={s.form_wrap}>
+                            <Form
+                                {...layout}
+                                name="basic"
+                                onFinish={this.onFinish}
+                            >
+                                <Form.Item
+                                    label="Логин"
+                                    name="username"
+                                    rules={[{ required: true, message: 'Please input your username!' }]}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="Пароль"
+                                    name="password"
+                                    rules={[{ required: true, message: 'Please input your password!' }]}
+                                >
+                                    <Input.Password />
+                                </Form.Item>
+                                <Form.Item {...tailLayout}>
+                                    <Button type="primary" htmlType="submit">
+                                        Войти
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </div>
+                    </div>
+                </Content>
+            </Layout>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
-        user: state.user.user || { username: null },
+        user: state.user.user || { token: null }
     }
 }
 
